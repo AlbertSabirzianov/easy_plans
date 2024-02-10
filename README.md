@@ -1,2 +1,2 @@
 # easy_plans
-Web service for teachers
+Web service for music teachers
