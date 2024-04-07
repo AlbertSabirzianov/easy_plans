@@ -1,13 +1,8 @@
 <!doctype html>
 <html lang="en">
-{% load django_bootstrap5 %}
 
-{% bootstrap_css %}
-
-{% bootstrap_javascript %}
-
-{% bootstrap_messages %}
   <head>
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Индивидуальный план</title>
@@ -24,7 +19,7 @@
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         {% if user.is_authenticated%}
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Личная страничка</a>
+          <a class="nav-link active" aria-current="page" href="{% url 'users:update_person' %}">Личная страничка</a>
         </li>
         {% endif %}
         {% if user.is_anonymous %}
@@ -43,11 +38,11 @@
 
         <li class="nav-item dropdown">
 
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Меню
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Тест</a></li>
+            <li><a class="dropdown-item" href="{% url 'users:works' %}">Ваши места работы</a></li>
 
           </ul>
 
@@ -66,6 +61,7 @@
 </nav>
     {% block content %}
     {% endblock%}
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   </body>
 </html>

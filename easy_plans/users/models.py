@@ -4,9 +4,11 @@ from django.db import models
 
 
 class Teacher(AbstractUser):
-    USERNAME_FIELD = 'email'
-    email = models.EmailField('email address', unique=True)
+    email = models.EmailField('email', unique=True)
+    father_name = models.CharField(max_length=30, null=True, blank=True, verbose_name='Отчество')
+
     REQUIRED_FIELDS = []
+    USERNAME_FIELD = 'email'
 
 
 User = get_user_model()
@@ -14,7 +16,13 @@ User = get_user_model()
 
 class School(models.Model):
 
-    name = models.TextField(primary_key=True)
+    name = models.TextField()
+    description = models.TextField()
+    address = models.TextField()
+    image_url = models.TextField()
+
+    def __str__(self):
+        return self.name
 
 
 class Estimation(models.IntegerChoices):
@@ -29,7 +37,15 @@ class Estimation(models.IntegerChoices):
 class WorkPlace(models.Model):
 
     school = models.ForeignKey(School, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, null=False, blank=True, on_delete=models.CASCADE)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['school', 'user'],
+                name='Уникальная связь Учитель - школа.'
+            )
+        ]
 
 
 class Student(models.Model):
