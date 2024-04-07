@@ -1,0 +1,16 @@
+{% extends  "base.html"%}
+
+{% block content %}
+
+{% for obj in object_list %}
+<div class="card" style="width: 18rem;">
+
+  <div class="card-body">
+    <h5 class="card-title">{{ obj.first_name }} {{ obj.second_name }} </h5>
+    <p class="card-title">{{ obj.work_place.school.name }}</p>
+    <a href="{% url 'students:update' obj.id %}" class="btn btn-primary">Подробнее</a>
+  </div>
+</div>
+{% endfor %}
+<button type="button" class="btn btn-light"><a href="{% url 'users:add_work' %}">Добавить </a></button>
+{% endblock %}

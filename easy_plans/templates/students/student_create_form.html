@@ -1,0 +1,17 @@
+{% extends  "base.html"%}
+
+{% block content %}
+{% load django_bootstrap5 %}
+<div class="container">
+        <div class="row my-5">
+            <div class="col-md-12">
+                <form action="" method="post" class="form">
+                    {% csrf_token %}
+                    {% bootstrap_form form %}
+                    <button type="submit" class="btn btn-primary">Добавить Ученика</button>
+                </form>
+            </div>
+        </div>
+    </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+{% endblock %}

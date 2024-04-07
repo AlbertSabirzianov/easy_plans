@@ -36,7 +36,7 @@ class Estimation(models.IntegerChoices):
 
 class WorkPlace(models.Model):
 
-    school = models.ForeignKey(School, on_delete=models.CASCADE)
+    school = models.ForeignKey(School, on_delete=models.CASCADE, verbose_name='Учебное заведение')
     user = models.ForeignKey(User, null=False, blank=True, on_delete=models.CASCADE)
 
     class Meta:
@@ -46,6 +46,9 @@ class WorkPlace(models.Model):
                 name='Уникальная связь Учитель - школа.'
             )
         ]
+
+    def __str__(self):
+        return self.school.name
 
 
 class Student(models.Model):
@@ -77,4 +80,4 @@ class Student(models.Model):
     father_phone = models.CharField(max_length=10, null=True, blank=True, verbose_name='Телефон отца')
     father_work_place = models.TextField(null=True, blank=True, verbose_name='Место работы/должность отца')
 
-    work_place = models.ForeignKey(WorkPlace, on_delete=models.CASCADE, related_name='students')
+    work_place = models.ForeignKey(WorkPlace, on_delete=models.CASCADE, related_name='students', verbose_name='Учебное заведение')
