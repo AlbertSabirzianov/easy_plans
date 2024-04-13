@@ -27,11 +27,11 @@ class School(models.Model):
 
 class Estimation(models.IntegerChoices):
 
-    one = 1
-    two = 2
-    three = 3
-    four = 4
-    five = 5
+    one = 1, "1"
+    two = 2, "2"
+    three = 3, "3"
+    four = 4, "4"
+    five = 5, "5"
 
 
 class WorkPlace(models.Model):
