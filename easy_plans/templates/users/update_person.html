@@ -13,4 +13,78 @@
             </div>
         </div>
     </div>
+{% if user.signature %}
+<div class="container">
+    <h2>Ваша подпись сейчас</h2>
+    <img src="{{ user.signature }}" class="img-thumbnail">
+</div>
+{% endif %}
+
+<style>
+    canvas {
+      border: 1px solid #000;
+    }
+</style>
+
+
+
+
+<div class="container">
+    <h2>Изменить подпись</h2>
+
+    <canvas id="drawingCanvas" width="200" height="200"></canvas>
+
+<button id="submitDrawingBtn" class="btn btn-primary">Сохранить подпись</button>
+    <button onclick="window.location.reload();" class="btn btn-danger">стереть</button>
+</div>
+
+  <script>
+    let canvas = document.getElementById('drawingCanvas');
+    let ctx = canvas.getContext('2d');
+    let isDrawing = false;
+
+    canvas.addEventListener('mousedown', (e) => {
+      isDrawing = true;
+      draw(e);
+    });
+
+    canvas.addEventListener('mousemove', (e) => {
+      if (isDrawing) {
+        draw(e);
+      }
+    });
+
+    canvas.addEventListener('mouseup', () => {
+      isDrawing = false;
+    });
+
+    function draw(e) {
+      ctx.fillRect(e.offsetX, e.offsetY, 4, 4); // Draw a small square at the mouse position
+    }
+
+    document.getElementById('submitDrawingBtn').addEventListener('click', () => {
+      let drawingData = canvas.toDataURL(); // Convert the drawing to a data URL
+      let jsonData = { "drawing": drawingData }; // Prepare JSON data
+      sendDataToBackend(jsonData);
+    });
+
+    function sendDataToBackend(jsonData) {
+      // Example of sending JSON data to the backend using fetch
+      fetch('{% url 'users:upload_signature' %}', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(jsonData)
+      })
+      .then(response => {
+        alert('Подпись сохранена!');
+        window.location.reload();
+      })
+      .catch(error => {
+        alert("Что то пошло не так ...");
+      });
+    }
+  </script>
+
 {% endblock %}

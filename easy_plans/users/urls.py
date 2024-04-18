@@ -13,6 +13,7 @@ urlpatterns = [
 
     path('works/', views.WorkPlacesView.as_view(), name='works'),
     path('add_work/', views.WorkPlacesAdd.as_view(), name='add_work'),
+    path('delete_work/<int:pk>', views.DeleteWorkPlace.as_view(), name='delete_work'),
 
-    path('delete_work/<int:pk>', views.DeleteWorkPlace.as_view(), name='delete_work')
+    path('upload_signature/', views.SignatureUploadView.as_view(), name='upload_signature')
 ]

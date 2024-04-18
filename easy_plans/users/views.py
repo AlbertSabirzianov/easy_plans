@@ -1,9 +1,13 @@
+import json
+
 from django.contrib.auth import logout, get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView, CreateView, View, UpdateView, ListView, DeleteView
 from . import forms
 from .models import WorkPlace
@@ -17,6 +21,15 @@ class UserCreateView(CreateView):
     form_class = forms.SignUpForm
     template_name = 'users/registration.html'
     success_url = reverse_lazy('users:main')
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+class SignatureUploadView(View, LoginRequiredMixin):
+
+    def post(self, request):
+        request.user.signature = json.loads(request.body).get('drawing')
+        request.user.save()
+        return HttpResponse('OK')
 
 
 class UserLoginView(LoginView):
