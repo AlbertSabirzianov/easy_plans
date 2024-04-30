@@ -10,6 +10,7 @@
     <p class="card-title">{{ obj.work_place.school.name }}</p>
     <a href="{% url 'students:update' obj.id %}" class="btn btn-primary">Подробнее</a>
     <a href="{% url 'students:delete' obj.id %}" class="btn btn-danger">Удалить</a>
+    <a href="{% url 'plans:update' obj.id %}" class="btn btn-light">К индивидуальному плану</a>
   </div>
 </div>
 {% endfor %}

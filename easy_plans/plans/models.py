@@ -5,8 +5,9 @@ from users.models import Student, Estimation
 
 class Plan(models.Model):
 
-    student = models.ForeignKey(
+    student = models.OneToOneField(
         Student,
+        primary_key=True,
         on_delete=models.CASCADE,
         related_name='plans',
         verbose_name='Студент'
@@ -15,7 +16,7 @@ class Plan(models.Model):
         max_length=250,
         verbose_name='Отделение',
         null=True,
-        blank=True
+        blank=True,
     )
     section = models.CharField(
         max_length=250,

@@ -7,6 +7,7 @@ class Teacher(AbstractUser):
     email = models.EmailField('email', unique=True)
     father_name = models.CharField(max_length=30, null=True, blank=True, verbose_name='Отчество')
 
+    username = models.CharField(max_length=30, null=True, blank=True)
     signature = models.TextField(
         blank=True,
         null=True,

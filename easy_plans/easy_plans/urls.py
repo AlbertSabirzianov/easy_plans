@@ -22,5 +22,5 @@ urlpatterns = [
     path('users/', include('users.urls', namespace='users')),
     path('students/', include('students.urls', namespace='students')),
     path('select2/', include('django_select2.urls')),
-    #path('plans/', include('plans.urls', namespace='plans'))
+    path('plans/', include('plans.urls', namespace='plans'))
 ]

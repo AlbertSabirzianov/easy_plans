@@ -3,6 +3,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+from plans.models import Plan
 from users.models import Student, WorkPlace
 
 
@@ -11,12 +12,18 @@ class CreateStudent(CreateView, LoginRequiredMixin):
     fields = "__all__"
     template_name = 'students/student_create_form.html'
 
+    def __create_plan_of_student(self):
+        plan = Plan()
+        plan.student = self.object
+        plan.save()
+
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
         form.fields['work_place'].queryset = WorkPlace.objects.filter(user=self.request.user)
         return form
 
     def get_success_url(self):
+        self.__create_plan_of_student()
         return reverse_lazy(
             "students:list",
             kwargs={'work_id': self.object.work_place.id}
