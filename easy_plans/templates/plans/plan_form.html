@@ -1,4 +1,4 @@
-{% extends  "base.html"%}
+{% extends  "base.html" %}
 
 {% block content %}
 {% load django_bootstrap5 %}
@@ -16,4 +16,21 @@
     </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
+{% for obj in years %}
+<div class="container">
+<div class="card">
+
+  <div class="card-body">
+    <h5 class="card-title">Учебный год {{ obj.start_year }}/{{ obj.end_year }} </h5>
+    <p class="card-title">{{ obj.result }}</p>
+    <a href="{% url 'plans:year' obj.id %}" class="btn btn-primary">Подробнее</a>
+    <a href="{% url 'plans:year_delete' obj.id %}" class="btn btn-danger">Удалить</a>
+
+  </div>
+</div>
+</div>
+{% endfor %}
+<div class="container">
+    <button type="button" class="btn btn-light"><a href="{% url 'plans:year_create' form.instance.pk %}">Добавить Учебный Год</a></button>
+</div>
 {% endblock %}

@@ -3,14 +3,18 @@
 {% block content %}
 
 {% for obj in object_list %}
-<div class="card" style="width: 18rem;">
-  <img src="{{ obj.school.image_url }}" class="card-img-top" alt="...">
-  <div class="card-body">
-    <h5 class="card-title">{{ obj.school.name}}</h5>
-    <a href="{% url 'students:list' obj.id %}" class="btn btn-primary">К ученикам</a>
-    <a href="{% url 'users:delete_work' obj.id %}" class="btn btn-danger">Удалить</a>
+<div class="container">
+  <div class="card" style="">
+    <img src="{{ obj.school.image_url }}" class="card-img-top" alt="...">
+    <div class="card-body">
+      <h5 class="card-title">{{ obj.school.name}}</h5>
+      <a href="{% url 'students:list' obj.id %}" class="btn btn-primary">К ученикам</a>
+      <a href="{% url 'users:delete_work' obj.id %}" class="btn btn-danger">Удалить</a>
+    </div>
   </div>
 </div>
 {% endfor %}
-<button type="button" class="btn btn-light"><a href="{% url 'users:add_work' %}">Добавить рабочее место</a></button>
-{% endblock %}
+<div class="container">
+  <button type="button" class="btn btn-light"><a href="{% url 'users:add_work' %}">Добавить рабочее место</a></button>
+</div>
+  {% endblock %}

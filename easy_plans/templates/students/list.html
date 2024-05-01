@@ -1,18 +1,24 @@
 {% extends  "base.html"%}
 
 {% block content %}
-<h3>Ваши ученики<span class="badge text-bg-secondary">{{ school_name }}</span></h3>
+<div class="container">
+  <h3>Ваши ученики<span class="badge text-bg-secondary">{{ school_name }}</span></h3>
+</div>
 {% for obj in object_list %}
-<div class="card" style="width: 18rem;">
+<div class="container">
+  <div class="card" style="width: 18rem;">
 
-  <div class="card-body">
-    <h5 class="card-title">{{ obj.first_name }} {{ obj.second_name }} </h5>
-    <p class="card-title">{{ obj.work_place.school.name }}</p>
-    <a href="{% url 'students:update' obj.id %}" class="btn btn-primary">Подробнее</a>
-    <a href="{% url 'students:delete' obj.id %}" class="btn btn-danger">Удалить</a>
-    <a href="{% url 'plans:update' obj.id %}" class="btn btn-light">К индивидуальному плану</a>
+    <div class="card-body">
+      <h5 class="card-title">{{ obj.first_name }} {{ obj.second_name }} </h5>
+      <p class="card-title">{{ obj.work_place.school.name }}</p>
+      <a href="{% url 'students:update' obj.id %}" class="btn btn-primary">Подробнее</a>
+      <a href="{% url 'students:delete' obj.id %}" class="btn btn-danger">Удалить</a>
+      <a href="{% url 'plans:update' obj.id %}" class="btn btn-light">К индивидуальному плану</a>
+    </div>
   </div>
 </div>
 {% endfor %}
-<button type="button" class="btn btn-light"><a href="{% url 'students:create' %}">Добавить </a></button>
+<div class="container">
+    <button type="button" class="btn btn-light"><a href="{% url 'students:create' %}">Добавить </a></button>
+</div>
 {% endblock %}
