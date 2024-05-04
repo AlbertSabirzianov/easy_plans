@@ -5,8 +5,10 @@ from django.http import Http404, HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views.generic import UpdateView, View, CreateView
 
-from plans.models import Plan, Year
+from plans.models import Plan, Year, Exam, Concert, Quarter
 from users.models import Student
+from . import forms
+from .mixins import YearMixin
 
 
 class PlanUpdateView(UpdateView, LoginRequiredMixin):
@@ -44,66 +46,28 @@ class PlanUpdateView(UpdateView, LoginRequiredMixin):
         return context
 
 
-class YearDelete(View, LoginRequiredMixin):
-
-    def get_success_url(self):
-        return reverse_lazy(
-            'plans:update',
-            kwargs={'student_pk': self.year.plan.pk}
-        )
-
-    def __get_year(self):
-        self.year = Year.objects.filter(
-            pk=int(self.kwargs.get('year_id'))
-        ).first()
-        if not self.year:
-            raise Http404()
-        return self.year
+class YearDelete(YearMixin, View, LoginRequiredMixin):
 
     def get(self, request, year_id):
-        self.__get_year().delete()
+        self.get_year()
+        if self.have_permission():
+            self.year.delete()
         return HttpResponseRedirect(self.get_success_url())
 
 
-class YearCreateView(CreateView, LoginRequiredMixin):
-    """
-    TODO: update and saving with modelformset Concert, Exam, Quarter
-    """
-
-    model = Year
-    template_name = 'plans/year_create_form.html'
-    fields = ('start_year', 'end_year', 'result', 'characteristic')
-
-    def __get_plan(self) -> Plan:
-        plan = Plan.objects.filter(
-            pk=int(self.kwargs.get('plan_id'))
-        ).first()
-        if not plan:
-            raise Http404()
-        return plan
+class YearCreateView(YearMixin, CreateView, LoginRequiredMixin):
 
     def form_valid(self, form):
-        form.instance.plan = self.__get_plan()
+        form.instance.plan = self.get_plan()
+        self.object = form.save()
+        self.year = self.object
+        self.save_objects_from_formsets()
         return super().form_valid(form)
-
-    def get_success_url(self):
-        return reverse_lazy(
-            'plans:update',
-            kwargs={'student_pk': self.__get_plan().pk}
-        )
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['plan_id'] = self.kwargs.get('plan_id')
+        context['exam_form'] = forms.ExamInlineForm()
+        context['concert_form'] = forms.ConcertInlineForm()
+        context['quarter_form'] = forms.QuarterInlineForm()
         return context
-
-
-class YearUpdateView(UpdateView, LoginRequiredMixin):
-    """
-    TODO: update and saving with modelformset Concert, Exam, Quarter
-    """
-    model = Year
-    fields = ('start_year', 'end_year', 'result', 'characteristic')
-    pk_url_kwarg = 'year_id'
-
-

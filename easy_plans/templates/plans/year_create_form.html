@@ -9,10 +9,39 @@
                 <form action="{% url 'plans:year_create' plan_id %}" method="post" class="form">
                     {% csrf_token %}
                     {% bootstrap_form form %}
+
+                    <div class="container">
+                      <h3><span class="badge text-bg-secondary">Экзамены</span></h3>
+                    </div>
+                   {{ exam_form.management_form }}
+                    {% for form in exam_form %}
+                        {% bootstrap_form form %}
+                        <hr>
+                    {% endfor %}
+
+                    <div class="container">
+                      <h3><span class="badge text-bg-secondary">Концерты</span></h3>
+                    </div>
+                    {{ concert_form.management_form }}
+                    {% for form in concert_form %}
+                        {% bootstrap_form form %}
+                        <hr>
+                    {% endfor %}
+
+                    <div class="container">
+                      <h3><span class="badge text-bg-secondary">Четверти</span></h3>
+                    </div>
+                    {{ quarter_form.management_form }}
+                    {% for form in quarter_form %}
+                        {% bootstrap_form form %}
+                    <hr>
+                    {% endfor %}
+
                     <button type="submit" class="btn btn-primary">Создать</button>
                 </form>
             </div>
         </div>
     </div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 {% endblock %}
