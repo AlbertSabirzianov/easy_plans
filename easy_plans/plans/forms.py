@@ -30,3 +30,15 @@ QuarterInlineForm = inlineformset_factory(
     fields=('number', 'repertoire', 'performance', 'estimation'),
     max_num=4
 )
+
+
+class ExamForm(forms.ModelForm):
+
+    class Meta:
+        model = Exam
+        fields = ('date', 'estimation')
+        widgets = {
+            'date': forms.DateInput(
+                attrs={'type': 'date'}
+            )
+        }

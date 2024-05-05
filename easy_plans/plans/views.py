@@ -8,6 +8,7 @@ from django.views.generic import UpdateView, View, CreateView
 from plans.models import Plan, Year, Exam, Concert, Quarter
 from users.models import Student
 from . import forms
+from .forms import ExamForm
 from .mixins import YearMixin
 
 
@@ -46,6 +47,7 @@ class PlanUpdateView(UpdateView, LoginRequiredMixin):
         return context
 
 
+# years
 class YearDelete(YearMixin, View, LoginRequiredMixin):
 
     def get(self, request, year_id):
@@ -84,5 +86,78 @@ class YearUpdateView(UpdateView, LoginRequiredMixin):
             'plans:year_update',
             kwargs={'year_id': self.object.pk}
         )
-    #
-    # def
+
+
+# exams
+class ExamDeleteView(View, LoginRequiredMixin):
+
+    def get_exam(self):
+        exam = Exam.objects.get(
+            pk=int(self.kwargs.get('exam_id'))
+        )
+        if not exam:
+            raise Http404()
+        return exam
+
+    def has_permission(self):
+        exam = self.get_exam()
+        print(exam.year.plan.student.work_place.user)
+        print(self.request.user)
+        return exam.year.plan.student.work_place.user == self.request.user
+
+    def get(self, *args, **kwargs):
+        exam = self.get_exam()
+        if self.has_permission():
+            exam.delete()
+        return HttpResponseRedirect(
+            reverse_lazy(
+                'plans:year_update',
+                kwargs={'year_id': exam.year.pk}
+            )
+        )
+
+
+class ExamUpdateView(UpdateView, LoginRequiredMixin):
+    model = Exam
+    pk_url_kwarg = 'exam_id'
+    template_name = 'plans/exam_update.html'
+    form_class = ExamForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['year'] = self.object.year
+        return context
+
+    def get_success_url(self):
+        return reverse_lazy(
+            'plans:year_update',
+            kwargs={'year_id': self.object.year.pk}
+        )
+
+
+class ExamCreateView(CreateView, LoginRequiredMixin):
+    model = Exam
+    pk_url_kwarg = 'exam_id'
+    form_class = ExamForm
+    template_name = 'plans/exam_create.html'
+
+    def get_success_url(self):
+        return reverse_lazy(
+            'plans:year_update',
+            kwargs={'year_id': self.year.pk}
+        )
+
+    @property
+    def year(self):
+        return Year.objects.get(pk=int(self.kwargs.get('year_id')))
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.year = self.year
+        self.object.save()
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['year'] = self.year
+        return context
