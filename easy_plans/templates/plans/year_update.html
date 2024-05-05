@@ -1,0 +1,99 @@
+{% extends  "base.html" %}
+
+{% block content %}
+{% load django_bootstrap5 %}
+
+<div class="container">
+  <h3>Год обучения {{ form.instance.start_year }}/{{ form.instance.end_year }}<span class="badge text-bg-secondary">{{ form.instance.plan.student.first_name }} {{ form.instance.plan.student.second_name }}</span></h3>
+</div>
+
+<div class="container">
+        <div class="row my-5">
+            <div class="col-md-12">
+                <form action="{% url 'plans:year_update' form.instance.pk %}" method="post" class="form">
+                    {% csrf_token %}
+                    {% bootstrap_form form %}
+                    <button type="submit" class="btn btn-primary">Сохранить Изменения</button>
+                </form>
+            </div>
+        </div>
+    </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+<div class="container">
+    <h3><span class="badge text-bg-secondary">Экзамены</span></h3>
+</div>
+<!--exams-->
+{% for exam in object.exams.all %}
+<div class="container">
+  <div class="card" style="width: 18rem;">
+
+    <div class="card-body">
+      <h5 class="card-title">{{ exam.date }}</h5>
+      <p class="card-title">{{ exam.estimation }}</p>
+      <a href="" class="btn btn-primary">Изменить</a>
+      <a href="" class="btn btn-danger">Удалить</a>
+    </div>
+  </div>
+</div>
+{% endfor %}
+
+<div class="container">
+    <button type="button" class="btn btn-light"><a href="">Добавить Экзамен</a></button>
+</div>
+
+
+<div class="container">
+    <h3><span class="badge text-bg-secondary">Концерты</span></h3>
+</div>
+<!--concerts-->
+{% for concert in object.concerts.all %}
+<div class="container">
+  <div class="card" style="width: 18rem;">
+
+    <div class="card-body">
+      <h5 class="card-title">{{ concert.date }}</h5>
+      <p class="card-title">{{ concert.name }}</p>
+      <a href="" class="btn btn-primary">Изменить</a>
+      <a href="" class="btn btn-danger">Удалить</a>
+    </div>
+  </div>
+</div>
+{% endfor %}
+
+<div class="container">
+    <button type="button" class="btn btn-light"><a href="">Добавить Концерт</a></button>
+</div>
+
+
+
+
+<div class="container">
+    <h3><span class="badge text-bg-secondary">Четверти</span></h3>
+</div>
+<!--quarters-->
+{% for quarter in object.quarters.all %}
+<div class="container">
+  <div class="card" style="width: 18rem;">
+
+    <div class="card-body">
+      <h5 class="card-title">{{ quarter.number }}</h5>
+      <p class="card-title">{{ quarter.name }}</p>
+      <p class="card-title">{{ quarter.repertoire }}</p>
+      <p class="card-title">{{ quarter.estimation }}</p>
+      <a href="" class="btn btn-primary">Изменить</a>
+      <a href="" class="btn btn-danger">Удалить</a>
+    </div>
+  </div>
+</div>
+{% endfor %}
+
+<div class="container">
+    <button type="button" class="btn btn-light"><a href="">Добавить Четверть</a></button>
+</div>
+
+
+
+
+{% endblock %}

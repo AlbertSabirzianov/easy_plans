@@ -71,3 +71,18 @@ class YearCreateView(YearMixin, CreateView, LoginRequiredMixin):
         context['concert_form'] = forms.ConcertInlineForm()
         context['quarter_form'] = forms.QuarterInlineForm()
         return context
+
+
+class YearUpdateView(UpdateView, LoginRequiredMixin):
+    model = Year
+    template_name = 'plans/year_update.html'
+    fields = ('start_year', 'end_year', 'result', 'characteristic')
+    pk_url_kwarg = 'year_id'
+
+    def get_success_url(self):
+        return reverse_lazy(
+            'plans:year_update',
+            kwargs={'year_id': self.object.pk}
+        )
+    #
+    # def

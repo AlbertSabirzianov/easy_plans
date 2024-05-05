@@ -25,7 +25,7 @@
 
   <div class="card-body">
     <h5 class="card-title">Учебный год {{ obj.start_year }}/{{ obj.end_year }} </h5>
-    <a href="{% url 'plans:year' obj.id %}" class="btn btn-primary">Подробнее</a>
+    <a href="{% url 'plans:year_update' obj.id %}" class="btn btn-primary">Подробнее</a>
     <a href="{% url 'plans:year_delete' obj.id %}" class="btn btn-danger">Удалить</a>
 
   </div>
