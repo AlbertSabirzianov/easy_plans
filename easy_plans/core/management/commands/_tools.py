@@ -8,8 +8,16 @@ from easy_plans import settings
 from users.models import School
 
 
+def is_school_table_empty() -> bool:
+    return School.objects.all().count() == 0
+
+
+def schools_already_in_base() -> None:
+    print(text2art('Schools already uploaded'))
+
+
 def upload_schools(url):
-    print(random.choice(['...', '..', '.']), sep='\r')
+    print(random.choice(['...', '..', '.']), end='\r')
     response = requests.get(
         url,
         headers={'X-API-KEY': settings.API_KEY}
