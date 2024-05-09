@@ -40,7 +40,7 @@
 {% endfor %}
 
 <div class="container">
-    <button type="button" class="btn btn-light"><a href="{% url 'plans:exam_create' form.instance.pk %}">Добавить Экзамен</a></button>
+    <a href="{% url 'plans:exam_create' form.instance.pk %}"><button type="button" class="btn btn-light">Добавить Экзамен</button></a>
 </div>
 
 
@@ -55,15 +55,17 @@
     <div class="card-body">
       <h5 class="card-title">{{ concert.date }}</h5>
       <p class="card-title">{{ concert.name }}</p>
-      <a href="" class="btn btn-primary">Изменить</a>
-      <a href="" class="btn btn-danger">Удалить</a>
+      <a href="{% url 'plans:concert_update' concert.pk %}" class="btn btn-primary">Изменить</a>
+      <a href="{% url 'plans:concert_delete' concert.pk %}" class="btn btn-danger">Удалить</a>
     </div>
   </div>
 </div>
 {% endfor %}
 
 <div class="container">
-    <button type="button" class="btn btn-light"><a href="">Добавить Концерт</a></button>
+    <a href="{% url 'plans:concert_create' form.instance.pk %}">
+        <button type="button" class="btn btn-light">Добавить Концерт</button>
+    </a>
 </div>
 
 
@@ -82,15 +84,17 @@
       <p class="card-title">{{ quarter.name }}</p>
       <p class="card-title">{{ quarter.repertoire }}</p>
       <p class="card-title">{{ quarter.estimation }}</p>
-      <a href="" class="btn btn-primary">Изменить</a>
-      <a href="" class="btn btn-danger">Удалить</a>
+      <a href="{% url 'plans:quarter_update' quarter.pk %}" class="btn btn-primary">Изменить</a>
+      <a href="{% url 'plans:quarter_delete' quarter.pk %}" class="btn btn-danger">Удалить</a>
     </div>
   </div>
 </div>
 {% endfor %}
 
 <div class="container">
-    <button type="button" class="btn btn-light"><a href="">Добавить Четверть</a></button>
+    <a href="{% url 'plans:quarter_create' form.instance.pk %}">
+        <button type="button" class="btn btn-light">Добавить Четверть</button>
+    </a>
 </div>
 
 

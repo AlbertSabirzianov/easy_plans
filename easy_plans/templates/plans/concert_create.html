@@ -1,0 +1,21 @@
+{% extends  "base.html"%}
+
+{% block content %}
+{% load django_bootstrap5 %}
+
+<div class="container">
+  <h3>Концерт {{ year.start_year }}/{{ year.end_year }}<span class="badge text-bg-secondary">{{ year.plan.student.first_name }} {{ year.plan.student.second_name }}</span></h3>
+</div>
+<div class="container">
+        <div class="row my-5">
+            <div class="col-md-12">
+                <form action="{% url 'plans:concert_create' year.pk %}" method="post" class="form">
+                    {% csrf_token %}
+                    {% bootstrap_form form %}
+                    <button type="submit" class="btn btn-primary">Добавить Концерт</button>
+                </form>
+            </div>
+        </div>
+    </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+{% endblock %}

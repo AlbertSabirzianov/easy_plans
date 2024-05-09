@@ -2,14 +2,15 @@ from typing import Sequence
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import Http404, HttpResponseRedirect
+from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import UpdateView, View, CreateView
 
 from plans.models import Plan, Year, Exam, Concert, Quarter
 from users.models import Student
 from . import forms
-from .forms import ExamForm
-from .mixins import YearMixin
+from .forms import ExamForm, ConcertForm
+from .mixins import YearMixin, YearObjectUpdateMixin, YearObjectDeleteMixin, YearObjectCreateMixin
 
 
 class PlanUpdateView(UpdateView, LoginRequiredMixin):
@@ -89,75 +90,57 @@ class YearUpdateView(UpdateView, LoginRequiredMixin):
 
 
 # exams
-class ExamDeleteView(View, LoginRequiredMixin):
-
-    def get_exam(self):
-        exam = Exam.objects.get(
-            pk=int(self.kwargs.get('exam_id'))
-        )
-        if not exam:
-            raise Http404()
-        return exam
-
-    def has_permission(self):
-        exam = self.get_exam()
-        print(exam.year.plan.student.work_place.user)
-        print(self.request.user)
-        return exam.year.plan.student.work_place.user == self.request.user
-
-    def get(self, *args, **kwargs):
-        exam = self.get_exam()
-        if self.has_permission():
-            exam.delete()
-        return HttpResponseRedirect(
-            reverse_lazy(
-                'plans:year_update',
-                kwargs={'year_id': exam.year.pk}
-            )
-        )
+class ExamDeleteView(YearObjectDeleteMixin):
+    model = Exam
+    pk_kwargs_name = 'exam_id'
 
 
-class ExamUpdateView(UpdateView, LoginRequiredMixin):
+class ExamUpdateView(YearObjectUpdateMixin):
     model = Exam
     pk_url_kwarg = 'exam_id'
     template_name = 'plans/exam_update.html'
     form_class = ExamForm
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['year'] = self.object.year
-        return context
 
-    def get_success_url(self):
-        return reverse_lazy(
-            'plans:year_update',
-            kwargs={'year_id': self.object.year.pk}
-        )
-
-
-class ExamCreateView(CreateView, LoginRequiredMixin):
+class ExamCreateView(YearObjectCreateMixin):
     model = Exam
-    pk_url_kwarg = 'exam_id'
     form_class = ExamForm
     template_name = 'plans/exam_create.html'
 
-    def get_success_url(self):
-        return reverse_lazy(
-            'plans:year_update',
-            kwargs={'year_id': self.year.pk}
-        )
 
-    @property
-    def year(self):
-        return Year.objects.get(pk=int(self.kwargs.get('year_id')))
+# concerts
+class ConcertDeleteView(YearObjectDeleteMixin):
+    model = Concert
+    pk_kwargs_name = 'concert_id'
 
-    def form_valid(self, form):
-        self.object = form.save(commit=False)
-        self.object.year = self.year
-        self.object.save()
-        return super().form_valid(form)
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['year'] = self.year
-        return context
+class ConcertUpdateView(YearObjectUpdateMixin):
+    model = Concert
+    template_name = 'plans/concert_update.html'
+    pk_url_kwarg = 'concert_id'
+    form_class = ConcertForm
+
+
+class ConcertCreateView(YearObjectCreateMixin):
+    model = Concert
+    form_class = ConcertForm
+    template_name = 'plans/concert_create.html'
+
+
+# quarters
+class QuarterDeleteView(YearObjectDeleteMixin):
+    model = Quarter
+    pk_kwargs_name = 'quarter_id'
+
+
+class QuarterUpdateView(YearObjectUpdateMixin):
+    model = Quarter
+    template_name = 'plans/quarter_update.html'
+    pk_url_kwarg = 'quarter_id'
+    fields = ('number', 'repertoire', 'performance', 'estimation')
+
+
+class QuarterCreateView(YearObjectCreateMixin):
+    model = Quarter
+    fields = ('number', 'repertoire', 'performance', 'estimation')
+    template_name = 'plans/quarter_create.html'

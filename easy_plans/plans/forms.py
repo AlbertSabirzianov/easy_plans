@@ -42,3 +42,15 @@ class ExamForm(forms.ModelForm):
                 attrs={'type': 'date'}
             )
         }
+
+
+class ConcertForm(forms.ModelForm):
+    class Meta:
+        model = Concert
+        fields = ('name', 'date')
+        widgets = {
+            'date': forms.DateInput(
+                attrs={'type': 'date'}
+            )
+        }
+
