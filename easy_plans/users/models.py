@@ -88,3 +88,9 @@ class Student(models.Model):
     father_work_place = models.TextField(null=True, blank=True, verbose_name='Место работы/должность отца')
 
     work_place = models.ForeignKey(WorkPlace, on_delete=models.CASCADE, related_name='students', verbose_name='Учебное заведение')
+
+    @property
+    def full_name(self):
+        return f'{self.second_name} {self.first_name}'
+
+
