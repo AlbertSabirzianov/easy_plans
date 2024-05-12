@@ -3,4 +3,5 @@ WORKDIR /app
 COPY requrements.txt .
 #RUN #sudo PATH=$PATH:/Applications/Postgres.app/Contents/Versions/9.3/bin
 RUN pip install -r requrements.txt
+RUN pip install gunicorn
 COPY . .
