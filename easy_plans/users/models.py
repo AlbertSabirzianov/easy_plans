@@ -31,6 +31,9 @@ class School(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        ordering = ['name']
+
 
 class Estimation(models.IntegerChoices):
 
@@ -64,7 +67,7 @@ class Student(models.Model):
     second_name = models.CharField(max_length=256, null=True, blank=True, verbose_name='Фамилия')
     sur_name = models.CharField(max_length=256, null=True, blank=True, verbose_name='Отчество')
     start_study = models.DateField(null=True, blank=True, verbose_name='Дата поступления в школу')
-    end_study = models.DateField(null=True, blank=True, verbose_name='Дата поступления в школу')
+    end_study = models.DateField(null=True, blank=True, verbose_name='Дата окончания школы (ухода)')
     reason = models.TextField(null=True, blank=True, verbose_name='В случае ухода/перехода из школы - причина')
     hearing = models.SmallIntegerField(choices=Estimation.choices, null=True, blank=True, verbose_name='Слух')
     rhythm = models.SmallIntegerField(choices=Estimation.choices, null=True, blank=True, verbose_name='Ритм')
