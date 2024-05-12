@@ -23,7 +23,6 @@ class DownloadDocumentView(LoginRequiredMixin, View):
             return HttpResponseForbidden("Нет прав")
         document_maker = DocumentMaker(plan=plan)
         stream = document_maker.get_document_stream()
-        document_maker.document.save('test.docx')
         stream.seek(0)
         return FileResponse(
             stream,

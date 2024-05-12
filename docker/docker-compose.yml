@@ -23,6 +23,7 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - DB_HOST=${DB_HOST}
       - DB_PORT=${DB_PORT}
+      - API_KEY=${API_KEY}
 
   db:
     image: postgres:16
