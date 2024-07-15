@@ -26,6 +26,12 @@ class DocumentMaker:
     def student(self):
         return self.plan.student
 
+    @property
+    def __student_name(self):
+        if not self.student.sur_name:
+            return self.student.full_name
+        return self.student.full_name + ' ' + self.student.sur_name
+
     @staticmethod
     def make_pr_on_side(pr: Paragraph, side):
         pr.paragraph_format.alignment = side
@@ -62,6 +68,22 @@ class DocumentMaker:
             WD_ALIGN_PARAGRAPH.CENTER
         )
         self.document.add_page_break()
+
+    def add_header(self, text: str):
+        head = self.document.add_paragraph()
+        run = head.add_run(text)
+        run.bold = True
+        self.make_pr_on_side(head, WD_ALIGN_PARAGRAPH.CENTER)
+
+    def add_line(self, text, line):
+        pass
+
+    def set_student_page(self):
+        self.add_header("Сведения об Учащемся")
+
+        pr = self.document.add_paragraph("Фамилия, Имя, Отчество ")
+        run = pr.add_run(self.__student_name)
+        run.underline = True
 
     def make_document(self):
         self.set_title()

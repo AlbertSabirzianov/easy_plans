@@ -5,11 +5,12 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 from plans.models import Plan
 from users.models import Student, WorkPlace
+from .forms import StudentCreateForm
 
 
 class CreateStudent(CreateView, LoginRequiredMixin):
     model = Student
-    fields = "__all__"
+    form_class = StudentCreateForm
     template_name = 'students/student_create_form.html'
 
     def __create_plan_of_student(self):
@@ -55,7 +56,7 @@ class StudentsListView(ListView, LoginRequiredMixin):
 
 class StudentUpdateView(LoginRequiredMixin, UpdateView):
     model = Student
-    fields = '__all__'
+    form_class = StudentCreateForm
     template_name = 'students/update.html'
 
     def get_success_url(self):
